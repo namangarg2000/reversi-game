@@ -55,7 +55,7 @@ def display(board: list[list[str]]) -> None:
 def show_outcome(board: list[list[str]]) -> None:
     x, o = count_pieces(board) 
     display(board)
-    print('--------------------')
+    print(SEP)
     print(f'Player 1 (X): {x} pieces')
     print(f'Player 2 (O): {o} pieces')
     if x > o:
@@ -67,6 +67,29 @@ def show_outcome(board: list[list[str]]) -> None:
 
 #Task 6
 def is_valid(command: str, board: list[list[str]]) -> bool:
+    board_size_str = f'{get_board_size(board)}'
+
+    if command in HELP_COMMAND:
+        return True
+    elif command in QUIT_COMMAND:
+        return True
+    elif len(command) == 3 and command[0] >= '1' and command[0] <=  board_size_str and command[1] == ',' and command[2] >= '1' and command[2] <= board_size_str:
+        return True
+    else:
+        return False
+
+#Task 7
+def get_command(board: list[list[str]]) -> str:
+    command = input(ENTER_COMMAND_MESSAGE)
+
+    while not is_valid(command, board):
+        print(INVALID_COMMAND_MESSAGE)
+        command = input(ENTER_COMMAND_MESSAGE)
+
+    return command
+
+#Task 8
+def can_flip_line(board: list[list[str]], pos: tuple[int, int], direction: str, player: str) -> bool:
     pass
 
 def play_game() -> None:
@@ -76,6 +99,7 @@ def play_game() -> None:
 #     play_game()
 
 
-board = create_initial_board(6)
-board[0][0] = 'O'
-show_outcome(board)
+board = create_initial_board(4)
+a = get_command(board)
+
+print(a)
