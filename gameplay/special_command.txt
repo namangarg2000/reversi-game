@@ -1,0 +1,36 @@
+
+Welcome to Reversi!
+
+Please enter a board size between 4 and 9 (inclusive): 4
+   1 2 3 4 
+1  . . . . 
+2  . X O . 
+3  . O X . 
+4  . . . . 
+--------------------
+Player 1 (X) turn
+Enter your move: help
+Invalid command.
+Enter your move: quit
+Invalid command.
+Enter your move: H
+
+Commands:
+- Enter a move as row,col
+  Example: 2,5
+- h/H: Display help
+- q/Q: Quit game
+
+Enter your move: h
+
+Commands:
+- Enter a move as row,col
+  Example: 2,5
+- h/H: Display help
+- q/Q: Quit game
+
+Enter your move: q/Q
+Invalid command.
+Enter your move: h/H
+Invalid command.
+Enter your move: Q
