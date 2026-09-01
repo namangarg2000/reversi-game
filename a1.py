@@ -106,7 +106,27 @@ def can_flip_line(board: list[list[str]], pos: tuple[int, int], direction: str, 
 
     return False
 
+#Task 9 -> need to update the position where player has played
+def flip_line(board: list[list[str]], pos: tuple[int, int], direction: str, player: str) -> None:
+    next_pos = (pos[0] + DIRECTIONS.get(direction)[0], pos[1] + DIRECTIONS.get(direction)[1])
+    
+    while board[next_pos[0]][next_pos[1]] != player:
+        board[next_pos[0]][next_pos[1]] = player
+        pos = next_pos    
+        next_pos = (pos[0] + DIRECTIONS.get(direction)[0], pos[1] + DIRECTIONS.get(direction)[1]) 
       
+#Task 10
+def can_make_move(board: list[list[str]], pos: tuple[int, int], player: str) -> bool:
+    if pos[0] >= 0 and pos[0] < get_board_size(board) and pos[1] >= 0 and pos[1] < get_board_size(board) and board[pos[0]][pos[1]] == EMPTY:
+        for direction in DIRECTIONS.keys():
+            if can_flip_line(board,pos,direction,player):
+                return True
+
+    return False
+
+#Task 11
+def make_move(board: list[list[str]], pos: tuple[int, int], player: str) -> None:
+    pass
 
 def play_game() -> None:
     pass
@@ -116,6 +136,5 @@ def play_game() -> None:
 
 
 board = create_initial_board(4)
-a = get_command(board)
-
-print(a)
+flip_line(board, (0, 1), "down", PLAYER_2)
+display(board)
