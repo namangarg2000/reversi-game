@@ -90,7 +90,23 @@ def get_command(board: list[list[str]]) -> str:
 
 #Task 8
 def can_flip_line(board: list[list[str]], pos: tuple[int, int], direction: str, player: str) -> bool:
-    pass
+    count_opponent_pieces = 0
+    next_pos = (pos[0] + DIRECTIONS.get(direction)[0], pos[1] + DIRECTIONS.get(direction)[1])
+
+    while next_pos[0] >= 0 and next_pos[0] < get_board_size(board) and next_pos[1] >= 0 and next_pos[1] < get_board_size(board):
+        if (count_opponent_pieces < 1 and board[next_pos[0]][next_pos[1]] == player) or board[next_pos[0]][next_pos[1]] == EMPTY:
+            return False
+        elif count_opponent_pieces >=1 and board[next_pos[0]][next_pos[1]] == player:
+            return True
+        elif board[next_pos[0]][next_pos[1]] != player and board[next_pos[0]][next_pos[1]] != EMPTY:   
+            count_opponent_pieces+=1
+            pos = next_pos
+
+        next_pos = (pos[0] + DIRECTIONS.get(direction)[0], pos[1] + DIRECTIONS.get(direction)[1])
+
+    return False
+
+      
 
 def play_game() -> None:
     pass
