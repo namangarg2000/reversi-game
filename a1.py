@@ -126,15 +126,70 @@ def can_make_move(board: list[list[str]], pos: tuple[int, int], player: str) -> 
 
 #Task 11
 def make_move(board: list[list[str]], pos: tuple[int, int], player: str) -> None:
-    pass
+    #Already been checked for move validity
+    board[pos[0]][pos[1]] = player
+    for direction in DIRECTIONS.keys():
+        if can_flip_line(board, pos, direction, player):
+            flip_line(board, pos, direction, player)
 
+#Task 12
+def has_valid_move(board: list[list[str]], player: str) -> bool:
+    for i in range(0, get_board_size(board)):
+        for j in range(0,get_board_size(board)):
+            if can_make_move(board, (i, j), player):
+                return True
+    return False
+
+#Task 13
 def play_game() -> None:
-    pass
+    print(WELCOME_MESSAGE)
+    board_size = int(input())
+    while not (board_size >= 4 and board_size <= 9):
+        board_size = int(input())
 
-# if __name__ == "__main__":
-#     play_game()
+    board = create_initial_board(board_size)
+    current_player = PLAYER_1
+
+    while True:
+        display(board)
+        if current_player == PLAYER_1:
+            print(PLAYER1_TURN_MESSAGE)
+        elif current_player == PLAYER_2:
+            print(PLAYER2_TURN_MESSAGE)
+
+        command = get_command(board)
+        if command in HELP_COMMAND:
+            print(HELP_MESSAGE)
+        elif command in QUIT_COMMAND:
+            return
+        else:
+            row = int(command[0]) - 1
+            col = int(command[2]) - 1
+
+            if not can_make_move(board,(row,col), current_player):
+                print(INVALID_MOVE_MESSAGE)
+                while True:
+                    command = get_command(board)
+                    if command in HELP_COMMAND:
+                        print(HELP_MESSAGE)
+                    elif command in QUIT_COMMAND:
+                        return
+                    else:
+                        row = int(command[0]) - 1
+                        col = int(command[2]) - 1
+                        if can_make_move(board,(row,col), current_player):
+                            break
+                        else:
+                            print(INVALID_MOVE_MESSAGE)
 
 
-board = create_initial_board(4)
-flip_line(board, (0, 1), "down", PLAYER_2)
-display(board)
+            make_move(board,(row,col), current_player)
+            current_player = get_opponent(current_player)
+
+            if not has_valid_move(board,current_player):
+                print(NO_VALID_MOVE_MESSAGE)
+                show_outcome(board)
+                break
+
+if __name__ == "__main__":
+    play_game()
