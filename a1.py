@@ -143,9 +143,9 @@ def has_valid_move(board: list[list[str]], player: str) -> bool:
 #Task 13
 def play_game() -> None:
     print(WELCOME_MESSAGE)
-    board_size = int(input())
+    board_size = int(input("Please enter a board size between 4 and 9 (inclusive): "))
     while not (board_size >= 4 and board_size <= 9):
-        board_size = int(input())
+        board_size = int(input("Please enter a board size between 4 and 9 (inclusive): "))
 
     board = create_initial_board(board_size)
     current_player = PLAYER_1
