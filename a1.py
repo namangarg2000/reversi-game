@@ -40,22 +40,22 @@ def create_initial_board(size: int) -> list[list[str]]:
 
 #Task 4
 def display(board: list[list[str]]) -> None:
-    print(' ', end='')
+    print('   ', end='')
     for i in range(0,get_board_size(board)):
-        print(f' {i+1}', end='')
+        print(f'{i+1} ', end='')
     print()
 
     for i in range(0, get_board_size(board)):
-        print(i+1, end=' ')
+        print(i+1, end='  ')
         for j in range(0, get_board_size(board)):
             print(board[i][j], end=' ')
         print()
+    print(SEP)
 
 #Task 5
 def show_outcome(board: list[list[str]]) -> None:
     x, o = count_pieces(board) 
     display(board)
-    print(SEP)
     print(f'Player 1 (X): {x} pieces')
     print(f'Player 2 (O): {o} pieces')
     if x > o:
@@ -76,6 +76,7 @@ def is_valid(command: str, board: list[list[str]]) -> bool:
     elif len(command) == 3 and command[0] >= '1' and command[0] <=  board_size_str and command[1] == ',' and command[2] >= '1' and command[2] <= board_size_str:
         return True
     else:
+        print(INVALID_COMMAND_MESSAGE)
         return False
 
 #Task 7
@@ -83,7 +84,6 @@ def get_command(board: list[list[str]]) -> str:
     command = input(ENTER_COMMAND_MESSAGE)
 
     while not is_valid(command, board):
-        print(INVALID_COMMAND_MESSAGE)
         command = input(ENTER_COMMAND_MESSAGE)
 
     return command
@@ -157,39 +157,27 @@ def play_game() -> None:
         elif current_player == PLAYER_2:
             print(PLAYER2_TURN_MESSAGE)
 
-        command = get_command(board)
-        if command in HELP_COMMAND:
-            print(HELP_MESSAGE)
-        elif command in QUIT_COMMAND:
-            return
-        else:
-            row = int(command[0]) - 1
-            col = int(command[2]) - 1
+        while True:
+            command = get_command(board)
+            if command in HELP_COMMAND:
+                print(HELP_MESSAGE)
+            elif command in QUIT_COMMAND:
+                return
+            else:
+                row = int(command[0]) - 1
+                col = int(command[2]) - 1
+                if can_make_move(board, (row, col), current_player):
+                    break
+                else:
+                    print(INVALID_MOVE_MESSAGE)
 
-            if not can_make_move(board,(row,col), current_player):
-                print(INVALID_MOVE_MESSAGE)
-                while True:
-                    command = get_command(board)
-                    if command in HELP_COMMAND:
-                        print(HELP_MESSAGE)
-                    elif command in QUIT_COMMAND:
-                        return
-                    else:
-                        row = int(command[0]) - 1
-                        col = int(command[2]) - 1
-                        if can_make_move(board,(row,col), current_player):
-                            break
-                        else:
-                            print(INVALID_MOVE_MESSAGE)
+        make_move(board,(row,col), current_player)
+        current_player = get_opponent(current_player)
 
-
-            make_move(board,(row,col), current_player)
-            current_player = get_opponent(current_player)
-
-            if not has_valid_move(board,current_player):
-                print(NO_VALID_MOVE_MESSAGE)
-                show_outcome(board)
-                break
+        if not has_valid_move(board,current_player):
+            print(NO_VALID_MOVE_MESSAGE)
+            show_outcome(board)
+            break
 
 if __name__ == "__main__":
     play_game()
